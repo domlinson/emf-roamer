@@ -47,20 +47,24 @@ if (isset($_SESSION["inQueue"]))
 		if($queueNum == 0)
 		{
 			echo "<center>You're up! You've got 5 minutes.</center>";
+			// DISPLAY THE STREAM AND CONTROLS
 		} else {
 			echo "<center>Number in queue: " . $queueNum . ". Wait time approx " . ($queueNum*5) . " minutes.</center>";
-			
 		}
+		
 		$newLine = preg_replace('/\s+/', '', $line);
 
-			$IDTime = date("r",hexdec(substr($newLine,0,8)));
-			$nowTime = date('Y-m-d H:i:s');
-			//$since_start = $nowTime->diff(new DateTime('2018-08-19 10:25:00'));
-			$difference_in_seconds = strtotime($nowTime) - strtotime($IDTime);//28800
-			if ($difference_in_seconds > 300)
-			{
-				echo "<center>Your 5 minutes is up!</center>";
-			}
+		$IDTime = date("r",hexdec(substr($_SESSION["myID"],0,8)));
+		$nowTime = date('Y-m-d H:i:s');
+		//echo $nowTime;
+		//echo $IDTime;
+		$difference_in_seconds = strtotime($nowTime) - strtotime($IDTime);
+		if ($difference_in_seconds > 300)
+		{
+			//echo $difference_in_seconds;
+			echo "<center>Your 5 minutes is up!</center>";
+			die(); // what to put here to end their session.
+		}
 }
 else
 {
