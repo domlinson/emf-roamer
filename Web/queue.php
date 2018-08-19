@@ -30,12 +30,12 @@ if (isset($_SESSION["inQueue"]))
     while (($line = fgets($handle)) !== false) {
 		
 		$newLine = preg_replace('/\s+/', '', $line);
+		$queueNum = $queueNum + 1;
 
-		echo $newLine . "<br />";
+		//echo $newLine . "<br />";
         if($newLine == $_SESSION["myID"])
 		{
-			$queueNum = $queueNum + 1;
-			echo $queueNum;
+			//echo $queueNum;
 			break;
 		}
     }
@@ -44,9 +44,23 @@ if (isset($_SESSION["inQueue"]))
 	} else {
     // error opening the file.
 	} 
-	
-		echo "<center>Number in queue: " . $queueNum . ". Wait time approx " . ($queueNum*5) . " minutes.</center>";
+		if($queueNum == 0)
+		{
+			echo "<center>You're up! You've got 5 minutes.</center>";
+		} else {
+			echo "<center>Number in queue: " . $queueNum . ". Wait time approx " . ($queueNum*5) . " minutes.</center>";
+			
+		}
+		$newLine = preg_replace('/\s+/', '', $line);
 
+			$IDTime = date("r",hexdec(substr($newLine,0,8)));
+			$nowTime = date('Y-m-d H:i:s');
+			//$since_start = $nowTime->diff(new DateTime('2018-08-19 10:25:00'));
+			$difference_in_seconds = strtotime($nowTime) - strtotime($IDTime);//28800
+			if ($difference_in_seconds > 300)
+			{
+				echo "<center>Your 5 minutes is up!</center>";
+			}
 }
 else
 {
